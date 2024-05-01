@@ -4,8 +4,8 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import numpy as np
 
 # Define the sentiment labels
-sentiment_labels = {0:"positive", 1:"neutral", 2:"negative"}
-message_types = {'Negative': 'error', 'Neutral': 'info', 'Positive': 'success'}
+sentiment_labels = {0: "positive", 1: "neutral", 2: "negative"}
+message_types = {"Negative": "error", "Neutral": "info", "Positive": "success"}
 
 # Load the pre-trained BERT model and tokenizer
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased")
@@ -24,12 +24,12 @@ def predict_sentiment(text, model, tokenizer):
         return_token_type_ids=False,
         pad_to_max_length=True,
         return_attention_mask=True,
-        return_tensors='pt',
-        truncation=True
+        return_tensors="pt",
+        truncation=True,
     )
 
-    input_ids = encoded_review['input_ids']
-    attention_mask = encoded_review['attention_mask']
+    input_ids = encoded_review["input_ids"]
+    attention_mask = encoded_review["attention_mask"]
 
     with torch.no_grad():
         output = model(input_ids, attention_mask=attention_mask)
@@ -39,16 +39,34 @@ def predict_sentiment(text, model, tokenizer):
     return sentiment_labels[prediction], probabilities
 
 # Create the Streamlit user interface
-st.title('Sentiment Analysis with BERT')
+st.set_page_config(page_title="Sentiment Analysis with BERT", page_icon=":sunny:")
 
-input_text = st.text_input('Enter your text here:')
+st.title("Sentiment Analysis with BERT")
+st.markdown(
+    """
+    This application analyzes the sentiment of text using BERT (Bidirectional Encoder Representations from Transformers).
+    """
+)
 
-if st.button('Analyze'):
+st.sidebar.title("Project Information")
+st.sidebar.info(
+    """
+    This project is created by Group XYZ as part of the Sentiment Analysis project.
+    """
+)
+
+input_text = st.text_area("Enter your text here:", height=200)
+
+if st.button("Analyze"):
     if not is_valid_input(input_text):
-        st.error('Please enter valid text.')
+        st.error("Please enter valid text.")
     else:
         prediction, probabilities = predict_sentiment(input_text, model, tokenizer)
         formatted_probabilities = [f"{prob * 100:.2f}%" for prob in probabilities]
 
-        st.write('Sentiment:', prediction)
-        st.write('Prediction Probabilities:', {label: prob for label, prob in zip(sentiment_labels.values(), formatted_probabilities)})
+        st.subheader("Result")
+        st.write("Sentiment:", prediction)
+        st.write(
+            "Prediction Probabilities:",
+            {label: prob for label, prob in zip(sentiment_labels.values(), formatted_probabilities)},
+        )
