@@ -57,7 +57,6 @@ st.markdown(
     """
 )
 
-<<<<<<< HEAD
 st.sidebar.title("RCC Institute of Information and Technology")
 st.sidebar.markdown("Project Information")
 st.sidebar.info(
@@ -73,7 +72,7 @@ rounded_image_with_name("/content/drive/MyDrive/Project_BERT/images/pratanu.png"
 rounded_image_with_name("/content/drive/MyDrive/Project_BERT/images/arghya.png", "Arghya Chowdhury CSE2021L02")
 rounded_image_with_name("/content/drive/MyDrive/Project_BERT/images/rittick.png", "Anuradha Adhikari CSE2021L16")
 
-=======
+
 st.sidebar.title("Project Information")
 st.sidebar.info(
     """
@@ -81,7 +80,6 @@ st.sidebar.info(
     """
 )
 
->>>>>>> 020e1b95649df0c0959e03703684a8f47a71f0eb
 input_text = st.text_area("Enter your text here:", height=200)
 
 if st.button("Analyze"):
